@@ -30,14 +30,44 @@ module Enumerable
         }
         return false
     end
+    def my_none?
+        self.my_each { |x|
+            if yield(x)
+                return false
+            end
+        }
+        return true
+    end
+    def my_count
+        counter = 0
+        self.my_each {|x|
+            if yield(x)
+                counter += 1
+            end
+        }
+        return counter
+    end
+    def my_map
+        counter = 0
+        new_array = []
+        while counter < self.length
+            new_array.push(yield(self[counter]))
+            counter += 1
+        end
+        return new_array
+    end
+    def my_inject input=nil
+        counter = 1
+        if input
+            temp_output = input
+            counter = 0
+        else
+            temp_output = self[0]
+        end
+        while counter < self.length
+            temp_output = yield(temp_output, self[counter])
+            counter += 1
+        end
+        temp_output
+    end
 end
-
-
-
-array1 = ["hi",2,3]
-array2 = array1.my_any? do |item|
-    item.is_a? String
-end
-
-puts array2
-
